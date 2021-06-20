@@ -1,0 +1,16 @@
+{
+  "name": "social-media-app",
+  "version": "1.0.0",
+  "description": "A social media app build using MERN stack with GraphQL",
+  "main": "server.js",
+  "author": "Bazil Korath",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.25.1",
+    "graphql": "^15.5.1",
+    "mongoose": "^5.12.14"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
