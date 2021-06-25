@@ -7,7 +7,46 @@ const { SECRET_KEY } = require("../../config");
 const User = require("../../models/User");
 
 module.exports = {
-  Query: {},
+  Query: {
+    async login(_, { loginInput: { username, password } }) {
+      // Fetch the user document
+      const user = await User.findOne({ username });
+      if (user) {
+        const doPasswordsMatch = await bcrypt.compare(password, user.password);
+        if (doPasswordsMatch) {
+          const token = jwt.sign(
+            {
+              id: user.id,
+              email: user.email,
+              username: user.username,
+            },
+            SECRET_KEY,
+            { expiresIn: "1h" }
+          );
+          return {
+            id: user._id,
+            email: user.email,
+            username: user.username,
+            token: token,
+            createdAt: user.createdAt,
+          };
+        }
+        {
+          throw new UserInputError("Incorrect Password.", {
+            errors: {
+              password: "Incorrect Password.",
+            },
+          });
+        }
+      } else {
+        throw new UserInputError("User doesn't exist.", {
+          errors: {
+            username: "Usert doesn't exist.",
+          },
+        });
+      }
+    },
+  },
   Mutation: {
     async register(
       _,

@@ -8,6 +8,10 @@ module.exports = gql`
     token: String
     createdAt: String
   }
+  input LoginInput {
+    username: String!
+    password: String!
+  }
   input RegisterInput {
     username: String!
     password: String!
@@ -16,6 +20,7 @@ module.exports = gql`
   }
   type Query {
     sayHi: String
+    login(loginInput: LoginInput): User
   }
   type Mutation {
     register(registerInput: RegisterInput): User
